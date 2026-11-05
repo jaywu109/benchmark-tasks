@@ -505,7 +505,7 @@ def test_task_json_has_every_field_and_names_no_one():
     for key in ("title", "category", "keywords", "instruction", "context", "setup", "scoring", "run_limit",
                 "fidelity", "scores"):
         assert meta.get(key), key
-    assert "media" not in meta
+    assert meta.get("media", "M-").startswith("M-")  # media is written by the upload script
     assert meta["category"] in {"Impact on jobs", "Impact on AI timelines", "Safety and alignment",
                                 "Societal relevance", "Other"}
     text = json.dumps(meta).lower() + (HERE / "README.md").read_text().lower() + TASK.docs.lower()
