@@ -7,13 +7,12 @@ A tilted placement that lands one end only earns partial credit.
 
 > Hang the orange handle on the wall rack so that it rests in both hooks at once.
 
-## How this differs from the board
+## What makes this task distinctive
 
-TK-KEGG5B lifts a 50 cm DIN rail with both arms, keeps it level and lowers it into two open cradles on 4 cm
-standoffs; the rail starts parallel to the line of cradles, so it needs no turn. Here a 32 cm handle starts pointing
-away from the arms and has to be turned a quarter turn to lie along a wall rack. It must then come down into two
-J-hooks, each a slot closed by a raised lip in front and the board behind: a handle resting on the lip tops scores
-0, and one seated end scores 0.3. The scripted demo does this with one arm.
+The handle starts pointing away from the arms, so it has to be turned a quarter turn before it can lie along the
+rack. Each hook is a slot closed by a raised lip in front and the board behind, so the handle has to come down
+between them rather than onto an open support: resting on the lip tops scores 0, and one seated end scores 0.3.
+The two hooks are 20 cm apart next to a wall, and the scripted demo seats the handle with one arm.
 
 What it tests: a quarter turn (the handle starts along x and must end along y, along the board), a carry above
 the 15 mm lips, and seating it in two separate slots next to a wall (the demo lowers it level and slowly into both
