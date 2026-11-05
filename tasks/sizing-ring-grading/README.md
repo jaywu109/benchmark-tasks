@@ -8,14 +8,12 @@ in front of the right arm is the large-grade bin. The robot grades every fruit w
 Instruction: *Grade the fruit with the sizing board: fruit that passes through the opening belongs in the
 small-grade bin, the rest in the large-grade bin.*
 
-## How this differs from the board
+## What makes this task distinctive
 
-TK-3WZ2X7 checks six pins of two diameters (20 and 28 mm) with a go/no-go gauge plate: a pin that fits stays
-seated in a gauge pocket and a pin that does not goes on a reject pad, so the gauge is also a destination.
-TK-8HT7LZ sorts steel bars by comparing their length with a master bar on a plate; there is no opening for a bar to
-pass through. Here the sizing board is the lid of the small-grade bin: a fruit that passes its 50 mm opening drops
-into the bin, and one that does not stays sitting in the opening and has to be moved on to the large-grade bin. The
-fruits share one colour and differ by 12 mm in diameter, and a fruit in the wrong bin costs 0.2.
+The sizing board is the lid of the small-grade bin, so grading and sorting are one physical test: a fruit that
+passes the 50 mm opening drops into the bin, and one that does not stays in the opening and has to be moved on to
+the large-grade bin. The fruits share one colour and differ by 12 mm in diameter, so the opening, not the colour,
+settles each grade. A fruit in the wrong bin costs 0.2.
 
 Files: `task.py` (the task file: objects, `success`, `distance`, `score`, `demo`), `task.json`,
 `test_task.py` (offline checks).
