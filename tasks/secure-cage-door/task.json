@@ -1,0 +1,22 @@
+{
+  "title": "Hold a cage door shut and slide its bolt across",
+  "category": "Impact on jobs",
+  "keywords": [
+    "animal care",
+    "veterinary",
+    "cage door",
+    "slide bolt",
+    "two-arm",
+    "hold and act",
+    "hinged door"
+  ],
+  "instruction": "Shut the cage door and bolt it.",
+  "context": "Veterinary, animal-shelter and lab-animal technicians close small-animal cages whose worn hinges swing the door partly open unless one holds the door against the frame while sliding the bolt fully across it.",
+  "setup": "Station table (top 0.7475 m; x forward from the arm bases, y to the left; arm bases at x 0, y +-0.305 m). All fixed parts use stainless grey (0.62, 0.64, 0.66). A fixed stainless-steel small-animal cage body, 140 mm (x) x 240 mm (y) x 130 mm (z), stands on the table centred at x 0.44 m, y 0.0 m (front face at x 0.370 m). Framing the front opening at x 0.360 to 0.370 m (10 mm deep in x) are three fixed stainless-steel boxes on the table: a hinge-side post on the left from y +0.077 to +0.120 m (43 mm wide, 130 mm tall), a latch-side post on the right from y -0.120 to -0.077 m (43 mm wide, 130 mm tall), and a bottom sill between them from y -0.077 to +0.077 m (154 mm wide, 8 mm tall), leaving a 154 mm wide front opening above z 0.7555 m. Hanging in the opening is a loose powder-coated dark green steel cage door (colour 0.15, 0.35, 0.22), 8 mm (x) x 150 mm (y) x 110 mm (z), mass 150 g. In its closed zero pose the door is centred at x 0.364 m, y 0.0 m, z 0.8125 m (front face at x 0.360 m flush with the frame front, 2 mm from each post and 2 mm above the sill). A vertical revolute hinge along the door's front hinge-side edge at x 0.360 m, y +0.075 m allows it to swing outward toward -x from 0 to 100 degrees open (angles -100 to 0 degrees about +Z), with a weak spring (stiffness 0.0004 N*m/deg, damping 0.00003 N*m*s/deg) pulling it toward 35 degrees open (-35 degrees), where it spawns at rest. Riding on the front of the latch-side post at x 0.349 m (back face at x 0.359 m, 1 mm in front of the closed door's front face), z 0.8125 m (65 mm above the table) is a loose zinc-plated steel slide bolt (colour 0.70, 0.70, 0.72), 20 mm (x) x 40 mm (y) x 14 mm (z), mass 20 g, on a horizontal prismatic joint along world y (travel 0 to 25 mm toward +y, viscous damping 2.0 N*s/m). At spawn (retracted, 0 mm travel) it spans y -0.117 to -0.077 m (centred at y -0.097 m), so its +y tip sits 2 mm short of the door's free edge (y -0.075 m). Nothing else is on the table.",
+  "scoring": "door_angle_deg is the door's rotation angle from its closed zero pose, computed as 2 * acos(|w|) in degrees. bolt_throw_mm is the slide bolt's +y travel from its spawn pose in mm, computed as (bolt_pos_y - (-0.097)) * 1000. The door is shut when door_angle_deg <= 1.5 degrees. Both the door and the bolt are released when both grippers' tool centre points are at least 3 cm from every point of the door's 8 x 150 x 110 mm box and at least 3 cm from every point of the bolt's 20 x 40 x 14 mm box. Score (SCORE_OVER = 'end', taken at the trial's last step): 1.0 when the door is shut (door_angle_deg <= 1.5), bolt_throw_mm >= 15.0, both the door and the bolt are released, and both are resting (linear speed under 1 cm/s and angular speed under 0.5 rad/s); 0.5 when the door is shut, 5.0 <= bolt_throw_mm < 15.0, and both are released and resting (bolted, but barely over the edge); 0.0 otherwise (including if the door is held shut without throwing the bolt, if the bolt is thrown while the door is open or blocks the closing door at ~12.5 degrees short of closed, or if a gripper is within 3 cm of the door or the bolt). The trial succeeds and ends early with score 1.0 when the 1.0 condition holds for 1 s.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Slide the bolt back to its retracted stop on the latch-side post and let the door return to its 35-degree open rest angle.",
+  "fidelity": "The hinge's tendency to swing the door open is modelled as a weak angular spring (0.0004 N*m/deg toward 35 degrees open) with light viscous damping (0.00003 N*m*s/deg), and the real cage door is a welded wire grid modelled here as a solid 150 g plate. The slide bolt rides on a damped prismatic joint (2.0 N*s/m) along the latch-side post without a physical barrel bracket. All surfaces use the simulator's rubber-like friction (1.2 static, 1.0 dynamic).",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-3DEC2C"
+}
