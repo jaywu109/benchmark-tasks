@@ -1,0 +1,21 @@
+{
+  "title": "Pull the spacer dowels and bond the laminate to the drawer front",
+  "category": "Impact on jobs",
+  "keywords": [
+    "cabinetmaker",
+    "laminate",
+    "contact cement",
+    "spacer dowels",
+    "drawer front",
+    "bond on contact",
+    "registration"
+  ],
+  "instruction": "Pull out the three spacer dowels so the laminate sheet bonds flat to the drawer front, still overhanging every edge.",
+  "context": "In a cabinet shop, a laminate sheet going onto a drawer front over contact cement is first laid on spacer dowels and lined up, because the cement grabs on first touch and the sheet cannot be shifted after; the dowels are then pulled so the sheet settles and bonds while still overhanging every edge for flush trimming.",
+  "setup": "Station table (top 0.7475 m; x forward from the arm bases, y to the left; arm bases at x 0, y +-0.305 m). A fixed MDF drawer-front blank, 160 (x) x 240 (y) x 18 mm, centred at x 0.30 m, y 0.0 m (top at z 0.7655 m, colour 0.50, 0.36, 0.24), its top face coated with dry contact cement. Three loose 12 mm round birch spacer dowels (24-sided prisms, dowel.obj, 300 mm long along y, 60 g, colour 0.86, 0.72, 0.50) lie on the blank at x 0.241, 0.300 and 0.359 m, running from y -0.17 to +0.13 m, so each sticks 50 mm out past the blank's -y edge. On them lies a grey-blue laminate sheet (colour 0.45, 0.55, 0.65) cut oversize to 176 x 260 mm: three 58 x 260 x 4 mm panels (panel_n, panel_m, panel_f at x 0.241, 0.300, 0.359 m, 40 g each, 1 mm apart) joined along y by two spring hinges (0.004 N m/rad toward flat, 0.002 N m s/rad damping, +-60 deg), with its underside 12 mm above the blank. The sheet overhangs the blank by 8 mm on each x edge and 10 mm on each y edge. Nothing else is on the table.",
+  "scoring": "Bonding: a panel bonds the first control step that its lowest corner is within 1 mm of the blank's top and it is within 3 deg of flat; from then on a fixed joint holds it where it lies for the rest of the trial. The sheet is registered when every panel's centre is within 6.0 mm in x and 8.0 mm in y of its set position, so the sheet still overhangs every edge of the blank by at least 2 mm. A panel counts when it is bonded, the sheet is registered, and both grippers' tool centre points are at least 3 cm from every point of the panel (released). Score (SCORE_OVER = 'end') = (number of counting panels) / 3. Success is all three panels counting, held for 1 s. Distance = the sum over unbonded panels of the lowest corner's height above the blank (m), plus how far (m) the worst panel is outside the registration window.",
+  "run_limit": "1200 steps (60 seconds at 20 Hz)",
+  "fidelity": "The 0.7 mm laminate sheet is three rigid 4 mm panels joined by soft spring hinges along the dowels, so it bends only along y. Contact cement is a rule, not adhesion physics: a fixed joint switched on at first flat contact within 1 mm. The blank is one fixed box. The dowel order is not scored, since shops differ (middle out or from one end).",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-BDSYU9"
+}
