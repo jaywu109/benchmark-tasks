@@ -1,0 +1,22 @@
+{
+  "title": "Put a comb frame back in a honey super, pushed up against the others",
+  "category": "Impact on jobs",
+  "keywords": [
+    "beekeeping",
+    "apiary",
+    "high lift",
+    "hanging part",
+    "Langstroth",
+    "bee space",
+    "self-spacing frames"
+  ],
+  "instruction": "Put the frame back in the super, pushed up against the others.",
+  "context": "After inspecting a super, a beekeeper hangs each frame back on the box's frame rests by its two lugs and slides it against its neighbours. Hoffman self-spacing frames are meant to touch at their wide shoulders: that keeps the combs one bee space apart, and a gap left between frames gets filled with brace comb. The frame is 48 cm long and has to be lifted about 15 cm to clear the box wall.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. Positions in cm from the midpoint between the arm bases: x straight out, y to the left. A 10-frame Langstroth shallow super (pine, no top or bottom, inside 37.5 x 46.7 cm, 14.6 cm tall, 1.9 cm walls) stands on the table with its long sides across it: inside x 24.5 to 62.0, |y| up to 23.35. Each short end wall has the frame rest rebate along its top inside edge: 1.6 cm wide, its floor 0.95 cm below the rim. Seven drawn shallow frames hang on the rebates pushed together against the far wall, centres at x 60.25 to 39.25, 3.5 cm apart. An eighth frame hangs by its lugs on a frame perch hooked over the near wall (two steel bars 1.6 cm wide and 1.0 cm tall, their tops at rebate height, x 13.5 to 22.6), centre x 17.0. Each frame (pine, with a drawn beeswax comb): top bar 44.8 x 2.7 x 1.9 cm with a 1.75 cm lug at each end (48.3 cm over the lugs), Hoffman end bars 3.5 cm wide at the shoulders, a 2.5 cm comb, 13.7 cm tall, 0.35 kg. Hanging, a frame's top is level with the rim.",
+  "scoring": "Checked by eye and with a ruler once everything is still. 1.0: the perch frame hangs by both lugs on the super's rebates (top within 2 mm of rim height, tilted under 2 degrees, turned under 3 degrees from square, centred along y within 5 mm), no gap over 2 mm between the shoulders of any two neighbouring frames (it included), all seven other frames still hang on the rebates, nothing moves and both grippers are at least 3 cm from the frame. 0.5: the same, but a gap between two neighbouring frames is over 2 mm. 0 otherwise, including a frame left on the perch, held, resting on its bottom bar or on one lug, or any of the seven other frames knocked off its rebates at any time during the trial (hanging it back does not undo that). Full score held for 1 second ends the trial; otherwise the score at the end of the run.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Hang the eighth frame back on the perch and push the seven others against the far wall.",
+  "fidelity": "Frames and the super are rigid pine boxes at real Langstroth sizes; the comb is one rigid 25 mm slab and the frame mass (0.35 kg, an extracted drawn shallow comb) is assumed. No bees, propolis or wax sticking: frames slide on the rebates with the simulator's rubber-like friction (1.2/1.0), higher than waxed pine. 7 frames, not 9 or 10, so both open grippers fit beside the frame when it is lowered.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-A8ZZTW"
+}
