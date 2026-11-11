@@ -1,0 +1,16 @@
+robocurve_ext: compound /World/envs/env_0/pupitre with 29 pieces
+robocurve_ext: mesh /World/envs/env_0/bottle_1/piece_0 from bottle.obj: 3 part(s), 256 vertices, collision convexHull
+robocurve_ext: compound /World/envs/env_0/bottle_1 with 2 pieces
+robocurve_ext: mesh /World/envs/env_0/bottle_2/piece_0 from bottle.obj: 3 part(s), 256 vertices, collision convexHull
+robocurve_ext: compound /World/envs/env_0/bottle_2 with 2 pieces
+robocurve_ext: mesh /World/envs/env_0/bottle_3/piece_0 from bottle.obj: 3 part(s), 256 vertices, collision convexHull
+robocurve_ext: compound /World/envs/env_0/bottle_3 with 2 pieces
+robocurve_ext: mesh /World/envs/env_0/bottle_4/piece_0 from bottle.obj: 3 part(s), 256 vertices, collision convexHull
+robocurve_ext: compound /World/envs/env_0/bottle_4 with 2 pieces
+  task_score: 1
+log: /home/sparklab/robocurve_runs/riddle-the-bottles/riddle_run1/adhoc_d0b777be.json
+hint: inspect it with: inspect-robots inspect /home/sparklab/robocurve_runs/riddle-the-bottles/riddle_run1/adhoc_d0b777be.json
+hint: HTML viewer: inspect-robots view /home/sparklab/robocurve_runs/riddle-the-bottles/riddle_run1/adhoc_d0b777be.json
+hint: render videos with: inspect-robots video /home/sparklab/robocurve_runs/riddle-the-bottles/riddle_run1/adhoc_d0b777be.json
+hint: browse all logs: inspect-robots view /home/sparklab/robocurve_runs/riddle-the-bottles/riddle_run1
+wall_clock_s: 98

@@ -1,0 +1,22 @@
+{
+  "title": "Riddle a row of sparkling-wine bottles an eighth turn in the pupitre",
+  "category": "Impact on jobs",
+  "keywords": [
+    "winemaking",
+    "champagne riddling",
+    "pupitre",
+    "rotate in place",
+    "turn about the part's own axis",
+    "chalk mark",
+    "do not pull out"
+  ],
+  "instruction": "Give each bottle in the rack an eighth turn.",
+  "context": "In traditional-method sparkling wine, the yeast left in each bottle after its second fermentation is worked down into the neck by riddling: the bottles rest neck-down in the holes of a pupitre (an A-frame riddling rack), and every day the riddler gives each bottle a quick eighth or quarter turn, using a chalk mark on its base to see how far it has gone. The bottle stays in its hole throughout. A riddler turns whole rows this way, a bottle in each hand.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. Positions in cm from the midpoint between the arm bases: x straight out, y to the left. One row of a wooden riddling rack stands across the table: a board 52 cm wide, 35 cm along its face and 2.5 cm thick, leaning back 15 degrees, with four square holes (3.2 cm across, 4 cm deep) 13 cm apart (y -19.5, -6.5, +6.5, +19.5). In each hole a 37.5 cl bottle rests neck-down at 45 degrees below horizontal, its shoulder on the hole's mouth and its base end facing the robot, the base about 24 cm above the table at x about 31. Each bottle: 24.4 cm tall, 7.1 cm across the body, 875 g full, dark green glass, with a white chalk stripe from the centre of its base out to its upper edge.",
+  "scoring": "Checked once everything is still, each bottle against where it rested at the start of the trial. A bottle counts when it has turned 30 to 60 degrees about its own axis (either way, read from its chalk stripe) and is still seated: the centre of its base within 5 mm and its axis within 3 degrees of where they started. 0.25 per bottle that counts, and only once both grippers are at least 3 cm from every bottle and nothing moves. 0 for everything if any bottle was pulled out of its hole (its base moved more than 30 mm or its axis more than 15 degrees) at any time during the trial; pushing it back does not undo that. Full score held for 1 second ends the trial; otherwise the score at the end of the run.",
+  "run_limit": "900 steps (45 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Turn each bottle back so its chalk stripe points straight up and leave it resting in its hole.",
+  "fidelity": "Bottle sizes are a real 37.5 cl champagne bottle's (Saverglass); hole pitch is a 60-hole French pupitre's; turn sizes and chalk mark follow the Comite Champagne. Each bottle is one rigid body (its hull, so the punt is solid; wine and lees are not modelled); a square hole stands in for the pupitre's oval one. Glass and wood use the simulator's default friction. Riddlers also give a small shake and tilt bottles steeper over the weeks; only the turn is asked here. One row of four, not a full rack.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-AL4UWZ"
+}

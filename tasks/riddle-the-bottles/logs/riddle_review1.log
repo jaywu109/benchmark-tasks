@@ -1,0 +1,1 @@
+VERDICT: FIX: In task.json setup, add the rack's height (about 35 cm along its face) and the holes' size (3.2 cm square, 4 cm deep). In the PR text, replace "so two hands cannot work neighbouring bottles at once" with the README's wording (the two hands work the outer pair together, then the inner pair one after the other).
