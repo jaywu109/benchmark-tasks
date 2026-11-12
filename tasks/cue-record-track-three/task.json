@@ -1,0 +1,23 @@
+{
+  "title": "Cue a record at the start of its third track",
+  "category": "Impact on jobs",
+  "keywords": [
+    "radio",
+    "record deck",
+    "tonearm",
+    "cueing",
+    "finger lift",
+    "counting track gaps",
+    "articulated mechanism",
+    "gentle set-down"
+  ],
+  "instruction": "Cue the record at the start of track 3 and leave it ready to play.",
+  "context": "A radio board operator or DJ cues a record before it goes on air: with the platter stopped, they lift the tonearm by the small finger lift on its headshell, swing it over the record and set the stylus down by hand in the smooth gap before the wanted track, then let go, so that pressing start plays that track from its first note. Tracks show as dark grooved bands separated by lighter gaps, and the wanted track is found by counting the gaps from the edge. A stylus dropped onto the vinyl can chip it, and one dragged across the grooves scratches the record.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. Positions in cm from the midpoint between the arm bases: x straight out, y to the left. A record deck: a walnut plinth 44 x 38 x 4 cm centred at x 43, y 4; an aluminium platter 30.4 cm across and 1 cm thick, stopped, its spindle at x 40, y 6; on it a 30 cm vinyl LP (2 mm). From the edge in, the LP has a 3 mm smooth edge, then five tracks, dark grooved bands 18, 12, 22, 9 and 10 mm wide, with a lighter smooth gap 4 mm wide before each of tracks 2 to 5, then a smooth run-out and a red paper label 10 cm across. The tonearm (aluminium tube 8 mm thick, 120 g with its 35 mm counterweight, 22.9 cm from pivot to stylus, about 2.4 g on the stylus) turns about a vertical and a horizontal bearing at its pivot at x 53, y -11, 2 cm above the record, on an aluminium bearing post 20 x 20 x 22 mm. It lies in its rest clip pointing toward the robot: the tube rests on a black post 15 cm out from the pivot between two clip fingers 8 mm tall, the stylus hanging off the record to its right. The rest is a black ABS post 12 x 12 mm, 28 mm tall, with two black ABS clip fingers 12 x 4 x 8 mm, 11 mm apart. At the arm's front a black ABS headshell 30 x 18 x 8 mm carries a blue ABS cartridge 18 x 12 x 10 mm and its stylus (an aluminium cantilever with a diamond tip, 3 x 3 x 2 mm); a finger lift sticks out 2.2 cm from the headshell's right side and rises as an aluminium fin 12 x 5 x 30 mm. The counterweight is a 35 mm steel cube on a 5 cm aluminium stub behind the pivot.",
+  "scoring": "Checked every control step; the trial ends as soon as it scores 1.0, otherwise it is read when the run ends. 1.0: the stylus tip rests on the record (no more than 1.5 mm above its surface, the arm still) inside the lighter gap before track 3 (between 10.9 and 11.3 cm from the spindle), with no gripper within 8 cm of the finger lift or within 5 cm of the arm between its pivot and the stylus, and all of this held for 1 s. 0.5: the same, but in another track gap. 0: anything else, including the stylus on a grooved band, the smooth edge, the run-out or the label, off the record or still held up, the arm moving, a gripper at the finger lift or on the arm, or the arm put back on its rest. Dropped or dragged: if the stylus ever meets the record moving faster than 5 cm/s, or slides more than 3 mm across the record from where it touched down (lifting it clear starts over), the trial scores 0 whatever happens afterwards.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Put the tonearm back in its rest clip; the dropped-arm record clears at reset.",
+  "fidelity": "Deck sizes follow a 9-inch arm (22.9 cm effective length); track widths and the 4 mm gaps are assumed. The record is a stack of thin rigid discs coloured by ring, so grooves are not modelled and the stylus does not settle into a groove; it rests where it is put down. The finger lift is a taller fin than on a real headshell, so straight-down fingers can hold it above the headshell. No cue lever; the platter does not turn. Masses are set to balance the arm, not derived from the materials.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-8XTYH4"
+}
