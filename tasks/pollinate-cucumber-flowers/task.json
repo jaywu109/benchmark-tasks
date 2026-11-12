@@ -1,0 +1,22 @@
+{
+  "title": "Hand-pollinate the female cucumber flowers with a brush",
+  "category": "Impact on jobs",
+  "keywords": [
+    "horticulture",
+    "hand pollination",
+    "cucumber",
+    "male and female flowers",
+    "tool use",
+    "brush stroke",
+    "order of contacts"
+  ],
+  "instruction": "Hand-pollinate the female cucumber flowers with the brush.",
+  "context": "Cucumbers, squash and melons bear separate male and female flowers, and pollen has to be carried from a male to a female for fruit to set. Where bees are too few, growers do it by hand: they pick up pollen from a freshly opened male flower's anthers with a small artist's paintbrush and brush it onto the stigma in the centre of each female flower. A female is told apart by the miniature fruit (its ovary) at the base of the flower; in cucumbers the males sit on very short stalks, in clusters. Flowers open in the morning and are receptive for one day only, so every open female has to be done in that pass.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. Positions in cm from the midpoint between the arm bases: x straight out, y to the left. A cucumber vine (7 mm thick, 36 cm long) is tied along a 2 mm steel support wire running across the table at x 45, 12 cm above it, between two wooden posts (12 mm square, 15 cm tall) at y -22 and +22; five leaves (6.5 cm) stand above the wire. Four open flowers on the vine face the robot, each 4 cm across with five yellow petals and an orange centre; from right to left: a female at y -12 (centre 11 cm up), a male at y -4 (12.5 cm up), a female at y +4 (11 cm up) and a male at y +12 (12.5 cm up). Each female has an 8 mm stigma at its centre, front at x 40, and behind its petals a dark green miniature cucumber, 35 mm long and 9 mm thick, on a stalk to the vine. Each male has a 5 mm anther column at its centre, front at x 42.2, on a very short stalk, with two closed buds of its cluster (16 x 6 x 6 mm) beside it. A pollination brush (17.8 cm long, 12 g: a red lacquered-wood handle 7 mm square, a metal ferrule and a cream synthetic-bristle tuft 6 mm thick) lies on a rest at y -20, pointing out, its tip at x 28.9: two grey painted-wood blocks, each 1.2 x 3 x 3 cm (3 cm tall), 10.5 cm apart.",
+  "scoring": "A stroke: the brush's tip (the end of its tuft) stays on a flower's stigma or anther column (within 4 mm of its front centre and no more than 1 mm in front of its face) while it moves at least 5 mm across that face from where it first touched. The brush picks up pollen with its first stroke across a male's anther column and keeps it for the rest of the trial. 0.5 per female whose stigma gets a stroke after that, 1.0 for both. A female stroked before the brush carries pollen earns nothing for that stroke, but can be stroked again later. Touching a flower with anything but the brush tip earns nothing. The credit is kept until the next episode. Full score held for 1 second ends the trial; otherwise the score at the end of the run.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Put the brush back on its rest; the record of pollen on the brush and of pollinated flowers clears at reset.",
+  "fidelity": "The flowers follow a University of California extension leaflet on cucurbit fruit set (miniature fruit on females, males on very short stalks in clusters, an artist's paintbrush); flower and brush sizes are assumed. Pollen is not simulated: the scorer tracks whether the tip has touched a male's anthers. Vine, flowers and leaves are fixed rigid shapes, the vine trained along a wire at bench height; the brush handle is square in section.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-2F5TMQ"
+}
