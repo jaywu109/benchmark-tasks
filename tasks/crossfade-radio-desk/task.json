@@ -1,0 +1,22 @@
+{
+  "title": "Crossfade from the song on air to the cued one on a radio desk",
+  "category": "Impact on jobs",
+  "keywords": [
+    "radio",
+    "broadcast desk",
+    "faders",
+    "crossfade",
+    "dead air",
+    "bimanual",
+    "sliding controls"
+  ],
+  "instruction": "The song on air is ending: crossfade to the cued one.",
+  "context": "A radio board operator changes from one source to the next with a crossfade: they bring the fader down on the audio that is finishing while pushing up the fader of the source that should start, so the change sounds smooth. Pulling the first fader down before the next is up leaves a silent gap (dead air); pushing the next one up before the first comes down plays both songs at full over each other. A source normally runs with its fader at the 0 mark. On this desk the song on air is on fader 1, standing at its 0 mark; the next song is cued on fader 8, closed; the green lamps above faders 1 and 8 show both channels switched on.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. Positions in cm from the midpoint between the arm bases: x straight out, y to the left. A radio desk panel (dark grey steel, 20 x 36 x 4 cm) centred at x 38, y 0. On it eight long-throw faders side by side, 4 cm apart from y 14 to y -14 (faders 1 to 8, left to right seen from the operator's seat), each sliding along x over 10 cm of travel in a slot (a black opening 110 x 4 mm cut in the steel panel): closed nearest the robot at x 30, fully up at x 40. Each has a 0 mark beside its slot 7.5 cm up from closed (white paint, 2 x 10 mm), a light grey ABS cap 20 x 12 x 16 mm (20 mm along the travel) riding 2 mm above the panel, and a lamp above its slot's far end (a polycarbonate LED lens 10 x 10 x 4 mm): green on faders 1 and 8, dark on 2 to 7. Fader 1 starts at its 0 mark; faders 2 to 8 start closed. The faders slide with damping and no springs, so each stays where it is left.",
+  "scoring": "Checked every control step; the trial ends as soon as it scores 1.0, otherwise it is read when the run ends. 1.0: fader 8 within 4 mm of its 0 mark and fader 1 within 3 mm of closed, both still, no gripper within 4 cm of either cap, all of this held for 1 s. 0 otherwise. Dead air or both up: if at any step faders 1 and 8 are both in the bottom quarter of their travel (under 25 mm up), or both past halfway (over 50 mm up), the trial scores 0 whatever happens afterwards.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Put fader 1 back at its 0 mark and faders 2 to 8 at closed; the dead-air record clears at reset.",
+  "fidelity": "Fader travel (100 mm long-throw), cap size and the 0 mark at 75 mm are typical of broadcast desks; the quarter and half lines standing in for 'near silent' and 'near full level' are assumed. The desk is flat (real desks slope toward the operator), the caps' stems and the slot's friction are not modelled (damping instead), and no audio is played.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-RD7PP2"
+}
