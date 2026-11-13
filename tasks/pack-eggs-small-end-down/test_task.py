@@ -510,7 +510,7 @@ def test_task_json_and_readme_have_every_field_and_name_no_one():
     ):
         assert meta.get(key), key
     assert meta["title"] == "Pack the last two eggs small end down"
-    assert meta["category"] == "Societal relevance"
+    assert meta["category"] == "Societal relatability"
     assert meta["instruction"] == "Put the two loose eggs into the empty carton cups, small end down."
     assert len(meta["fidelity"]) <= 500, len(meta["fidelity"])
     assert meta["scores"] == "not yet run" or meta["scores"].startswith("Dream-1 run: "), meta["scores"]

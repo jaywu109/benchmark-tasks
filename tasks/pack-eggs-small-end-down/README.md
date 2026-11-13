@@ -77,6 +77,21 @@ Offline checks: `YAM_ARENA=~/yam-isaac-lab-arena python -m pytest -q test_task.p
 - `distance()` = sum over the two loose eggs of the horizontal xy distance (m) to the nearer empty cup, plus `0.001`
   per degree of tilt above `20.0 deg`.
 
+### Egg integrity (real-world trials)
+
+The simulated eggs are rigid convex hulls: they cannot crack or leak, so a gripper that squeezes an egg hard enough to
+crack a real one still earns placement credit in simulation. The simulation score cannot detect damage. On real eggs
+this check is applied before any placement credit:
+
+- **Before the trial**, check all six eggs (the two loose ones and the four prepacked ones) under a bright light, and
+  replace any egg that is cracked or leaking.
+- **After the run**, check each egg the same way, in place. An egg is **damaged** if it shows any crack (a hairline
+  crack included), a dent in the shell, or any leak (a wet shell, or liquid on the carton or the table).
+- **Loose eggs:** a damaged loose egg earns no credit for its cup, however well it is placed.
+- **Prepacked eggs:** if any of the four prepacked eggs is damaged, or has been lifted or knocked out of its cup, the
+  trial scores 0. (In simulation these four eggs are fixed, so they cannot be disturbed.)
+- **Reset:** replace every damaged egg before the next trial.
+
 ## Design numbers
 
 - **Gripper:** fully open, the pads are `93.9 mm` apart (`FINGER_OPEN = -0.04695 m`). A `44 mm` egg leaves `49.9 mm`
