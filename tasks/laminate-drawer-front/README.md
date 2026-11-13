@@ -1,9 +1,10 @@
 # Pull the spacer dowels and bond the laminate to the drawer front
 
-A laminate sheet lies on three spacer dowels over a drawer-front blank coated with dry contact cement. Contact cement
-grabs on first touch and the sheet cannot be moved after it bonds. So the robot must pull the dowels out from under
-the sheet without dragging it off its place, letting each part of the sheet settle flat onto the blank and bond while
-the sheet still overhangs every edge for flush trimming.
+Gluing plastic laminate onto a drawer front or countertop with contact cement is a familiar home-improvement and
+cabinetmaking job. A laminate sheet lies on three spacer dowels over a drawer-front blank; contact cement on both the
+blank and the sheet's underside has dried, and it grabs on first touch, so the sheet cannot be moved after it bonds.
+The robot must pull the dowels out from under the sheet without dragging it off its place, letting each part of the
+sheet settle flat onto the blank and bond while the sheet still overhangs every edge for flush trimming.
 
 Instruction: *Pull out the three spacer dowels so the laminate sheet bonds flat to the drawer front, still overhanging
 every edge.*
@@ -17,7 +18,7 @@ Positions are in metres. x runs forward from the arm bases, y runs left from the
 z = 0.7475.
 
 - **Drawer-front blank (fixed):** MDF, 160 (x) x 240 (y) x 18 mm, centred at x 0.30, y 0.0 (top z = 0.7655),
-  colour (0.50, 0.36, 0.24). Its top face carries dry contact cement.
+  colour (0.50, 0.36, 0.24). Its top face carries dry contact cement, as does the laminate's underside.
 - **Spacer dowels (loose, 3):** `dowel_n`, `dowel_m`, `dowel_f`, 12 mm round birch dowels (24-sided prisms,
   `dowel.obj`), 300 mm long along y, 60 g, colour (0.86, 0.72, 0.50). They lie on the blank at x = 0.241, 0.300, 0.359,
   from y -0.17 to +0.13, so each sticks 50 mm out past the blank's -y edge.
@@ -69,6 +70,37 @@ test_task.py` (NumPy and pytest only).
   worst panel is outside the registration window.
 - The order of the dowels is not scored. Shops differ: some pull the middle dowel first and work outward, others
   start at one end and hold the sheet in place.
+
+## Real-world trials
+
+**Materials.** Blank: 18 mm MDF cut to 160 x 240 mm. Sheet: 0.7 mm vertical-grade high-pressure decorative laminate,
+cut to 176 x 260 mm. Dowels: three 12 mm round birch dowels, 300 mm long, uncoated. Contact cement goes on **both mating
+surfaces**, the blank's top face and the laminate's underside, applied and dried as the cement maker's instructions
+say; the trial starts once both coats are dry to the touch and still within the cement's open time. Then the dowels
+and the sheet are laid out as in "What is on the table".
+
+**Three bands on one sheet.** Before cementing, mark two pencil ticks on each 260 mm edge of the sheet, 59 and 117 mm
+from its near edge. They divide the continuous sheet into three bands, 58 mm wide and 260 mm long, near, middle and
+far, each centred over one dowel. These are the three simulated panels.
+
+**Checks after the run** (non-destructive, without lifting or prying the sheet), for each band:
+
+| Check | How | Passes when |
+|---|---|---|
+| Released | end photo | no gripper touches the sheet |
+| Bonded flat | 0.25 mm feeler gauge slid in between laminate and blank where the band crosses the blank's two 160 mm edges (its left and right sides) | it goes in no more than 5 mm at either place |
+| | 1 mm feeler gauge under a steel straightedge laid along the band's centre line | it does not pass anywhere (no bubble or raised edge) |
+| Registered | steel ruler | the sheet overhangs the blank by at least 2 mm at both ends of every band and along the near and far edges |
+
+Score = (bands passing all checks) / 3, the same as `score()` in simulation.
+
+**Contact at an angle.** On the real sheet, a band that touches the cement before it lies flat bonds at once where it
+touched. Nothing special is done about it: the band is scored by the same checks, so a tilted touchdown that leaves a
+raised edge, a bubble, or a sheet pulled off its mark loses that band's credit. The simulation approximates the cement
+with a rule (a panel bonds when it is within 1 mm and 3 degrees of flat); a panel that touches tilted stays free until
+it lies flat, so simulation can be more forgiving of a tilted touchdown than the real sheet. See Fidelity in `task.json`.
+
+**Reset.** The bond is permanent: every real trial needs a fresh blank and a fresh laminate sheet.
 
 ## Design numbers
 

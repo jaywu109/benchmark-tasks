@@ -1,5 +1,5 @@
 """On the station table, in front of the right arm: a fixed 160 x 240 x 18 mm MDF drawer-front blank, centred
-at x 0.30 m, y 0.0 m, whose top face is coated with dry contact cement. A laminate sheet, cut oversize to 176 x 260 mm
+at x 0.30 m, y 0.0 m, whose top face, like the laminate's underside, is coated with dry contact cement. A laminate sheet, cut oversize to 176 x 260 mm
 (8 mm past the blank on each x edge, 10 mm past each y edge), lies on three 12 mm round spacer dowels resting on the
 blank along y at x 0.241, 0.300 and 0.359 m. Each dowel is 300 mm long and sticks out 50 mm past the blank's -y edge.
 The sheet is three 58 x 260 x 4 mm panels (40 g each, 1 mm apart) joined along y by spring hinges, so it sags where a

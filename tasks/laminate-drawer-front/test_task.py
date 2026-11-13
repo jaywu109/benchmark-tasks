@@ -280,7 +280,7 @@ def test_task_json_has_every_field_and_names_no_one():
     for key in ("title", "category", "keywords", "instruction", "context", "setup", "scoring", "run_limit", "fidelity",
                 "scores"):
         assert meta.get(key), key
-    assert meta["category"] == "Impact on jobs"
+    assert meta["category"] == "Societal relatability"
     assert meta["instruction"] == ("Pull out the three spacer dowels so the laminate sheet bonds flat to the drawer "
                                    "front, still overhanging every edge.")
     assert len(meta["fidelity"]) <= 500, len(meta["fidelity"])
