@@ -355,6 +355,34 @@ def test_a_slide_held_in_its_slot_by_a_gripper_scores_zero_for_it(monkeypatch):
     monkeypatch.setattr(M, "tcp_points", lambda: [np.array(M.PARK_LEFT), np.array(M.PARK_RIGHT)])
     assert TASK.score(g) == 1.0 and TASK.success(g)  # both arms parked as in the demo: every slide counts
 
+def test_a_face_grip_on_the_specimen_area_latches_and_costs_that_slide(monkeypatch):
+    M.new_episode()
+    g = goal()
+    c = np.asarray(g["slide_3"].pos, float)
+    across = np.array([[1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, -1.0]])  # fingers closing along x: across the faces
+    along = np.array([[0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, -1.0]])  # fingers closing along y: the demo's end grip
+    monkeypatch.setattr(M, "tcp_poses", lambda: [(c + (0.0, 0.0, 0.008), along), (np.array(M.PARK_RIGHT), along)])
+    M.violations(g)
+    assert not any("face contact" in v for v in M.violations(g))
+    monkeypatch.setattr(M, "tcp_poses", lambda: [(c + (0.0, 0.010, 0.008), across), (np.array(M.PARK_RIGHT), along)])
+    assert "slide_3 face contact" in M.violations(g)
+    monkeypatch.setattr(M, "tcp_poses", lambda: [])
+    monkeypatch.setattr(M, "tcp_points", lambda: [np.array(M.PARK_LEFT), np.array(M.PARK_RIGHT)])
+    assert TASK.score(g) == pytest.approx(0.8) and not TASK.success(g)  # latched: slide_3 no longer counts
+    M.new_episode()
+    assert TASK.score(g) == 1.0
+
+
+def test_a_face_grip_at_the_unprotected_end_is_allowed(monkeypatch):
+    M.new_episode()
+    g = goal()
+    c = np.asarray(g["slide_2"].pos, float)
+    across = np.array([[1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, -1.0]])
+    # TCP 60 mm along the slide from its centre: the 20 mm pads reach only to 40 mm, past the 25 mm protected half-length
+    monkeypatch.setattr(M, "tcp_poses", lambda: [(c + (0.0, 0.060, 0.008), across)])
+    assert not any("face contact" in v for v in M.violations(g))
+
+
 # -- 5. layout: no overlaps, resting on slabs, gripper fit, camera views ---------------------------------------------
 
 
@@ -450,7 +478,7 @@ def test_task_json_has_every_field_and_names_no_one():
     ):
         assert meta.get(key), key
     assert meta["title"] == "Load five glass slides into a staining rack"
-    assert meta["category"] == "Impact on jobs"
+    assert meta["category"] == "Other"
     assert meta["instruction"] == "Move the five slides from the drying rack into the staining rack, one slide per slot."
     assert len(meta["fidelity"]) <= 500, len(meta["fidelity"])
     assert meta["scores"] == "not yet run" or meta["scores"].startswith("Dream-1 run: "), meta["scores"]

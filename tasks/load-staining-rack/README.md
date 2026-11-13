@@ -3,7 +3,7 @@
 Five 75 x 25 x 1.0 mm glass microscope slides stand upright in a five-slot drying rack on the left side of the table.
 Beside it on the right sits a five-slot staining rack with 4.0 mm wide slots. The robot must slot all five
 upright into the staining rack, one slide per slot, and let go of each, without tipping any slide flat or dropping it
-off the table.
+off the table. Slides are handled by their edges only: touching a slide's specimen area costs that slide its credit.
 
 Instruction: *Move the five slides from the drying rack into the staining rack, one slide per slot.*
 
@@ -62,6 +62,17 @@ test_task.py` (NumPy and pytest only).
 - **Latched violation per slide (`<slide> fell`):** if a slide's tilt ever exceeds 60 deg (lying flat) or its centre
   goes below the table top (or beyond the table footprint), that slide counts 0 for the rest of the trial even if
   stood up again.
+- **Latched violation per slide (`<slide> face contact`): edge-only handling.** The protected specimen area is, on both
+  75 x 25 mm faces, everything except the 12.5 mm at each end (the central 50 mm of the slide's length, full height).
+  If at any step a gripper's fingers close across the slide's thickness (closing axis within 45 deg of the face
+  normal) with the slide between its open fingers (TCP within 47 mm of the slide's mid-plane) and its pads over the
+  protected area (TCP within 25 + 20 mm of the slide's centre along its length, pads overlapping its height), that
+  slide counts 0 for the rest of the trial. Gripping the slide by its two 25 x 1 mm end edges, fingers closing along
+  its length, never triggers it. Checked every control step in `violations()`.
+- **Face contact in real trials:** before each trial, press both pads of each gripper onto a washable-ink stamp pad.
+  Before the run, mark the protected area's two boundaries on each slide with fine marker ticks on its edges (12.5 mm
+  from each end). After the run, look at both faces of each slide against a white card: any ink mark inside the
+  protected area means that slide counts 0. Clean the slides and re-ink the pads before the next trial.
 - Two or more slides in the same slot: all of them in that slot count 0.
 - A slide counts only when both grippers' TCPs are at least 3 cm from every point of it, so a slide still held does not count.
 - `score()` = 0.2 x (slides in a rack slot, `resting()` (under 1 cm/s and 0.5 rad/s), not fallen, alone in their
@@ -106,6 +117,8 @@ seed):
   Isaac start-up.
 - Dream-1: `task_score` 0.0 after the full 1,600-step run limit; 151 s wall clock.
 - Offline tests: 25 passed.
+- The face-contact rule was added after these runs. The demo grips every slide by its end edges with the fingers
+  closing along the slide's length (closing axis 90 deg from the face normal), so the rule does not apply to it.
 - Top camera: in the first frame both racks and the five slides are visible between the arms; in the demo's last frame
   all five slides stand in the staining rack, the drying rack is empty and both grippers are clear of the racks.
 

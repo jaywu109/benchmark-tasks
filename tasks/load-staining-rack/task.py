@@ -202,6 +202,50 @@ def tcp_points() -> list:
     return []
 
 
+def tcp_poses() -> list:
+    """(world TCP position, TCP rotation matrix) of both arms this step, read from the embodiment; [] offline.
+    The fingers close along the TCP frame's x axis (rotation column 0)."""
+    f = sys._getframe(1)
+    while f is not None:
+        s = f.f_locals.get("self")
+        if s is not None and hasattr(s, "_held") and getattr(s, "_base", None) is not None:
+            from yam_arena import ik, runtime, station
+
+            scene = s._base.scene
+            return [ik.tcp_pose(runtime.arm_q(scene[f"{a}_robot"]), station.BASES[a]) for a in ("left", "right")]
+        f = f.f_back
+    return []
+
+
+# -- edge-only handling: the specimen area of each face is protected --------------------------------------------------
+# Slides are handled by their edges only. The protected specimen area is, on both 75 x 25 mm faces, everything except
+# the 12.5 mm at each end (the central 50 mm of the length, full height). A "face grip" is a gripper whose fingers
+# close across the slide's thickness (closing axis within 45 deg of the face normal) with the slide between its open
+# fingers and its pads (20 mm half-width, tips 13 mm past the TCP, about 30 mm tall) over the protected area. It
+# latches "<slide> face contact" and that slide counts 0 for the rest of the trial.
+PROTECT_HALF_L = 0.025  # protected area: |local y| <= 25 mm
+PAD_HALF_WIDTH = 0.020  # pad extent across the closing direction
+PAD_REACH_UP = 0.030  # pad extent above the TCP along the gripper's approach axis (conservative)
+FINGER_HALF_GAP = 0.047  # half the 94 mm open pad gap
+FACE_GRIP_COS = math.cos(math.radians(45.0))
+
+
+def face_grip(state, tcp_pos, tcp_rot) -> bool:
+    """True when this gripper straddles the slide's protected specimen area with its fingers closing across the faces."""
+    import numpy as np
+    from yam_arena.urdf import quat_xyzw_to_matrix
+
+    rot = quat_xyzw_to_matrix(np.asarray(state.quat_xyzw, float))
+    p = rot.T @ (np.asarray(tcp_pos, float) - np.asarray(state.pos, float))
+    closing = rot.T @ np.asarray(tcp_rot, float)[:, 0]
+    return bool(
+        abs(closing[0]) >= FACE_GRIP_COS
+        and abs(p[0]) <= FINGER_HALF_GAP
+        and abs(p[1]) <= PROTECT_HALF_L + PAD_HALF_WIDTH
+        and -SLIDE_H / 2 - PAD_REACH_UP <= p[2] <= SLIDE_H / 2 + PAD_TIP_PAST_TCP
+    )
+
+
 def box_distance(state, size, point) -> float:
     """Distance (m) from ``point`` to the nearest point of a box of ``size`` at ``state``'s pose (0 inside it)."""
     import numpy as np
@@ -234,15 +278,19 @@ def _episode_time():
 
 
 def violations(objects) -> set[str]:
-    """This episode's latched violations: '<slide> fell' for any slide that tilted over 60 deg or left the table."""
+    """This episode's latched violations: '<slide> fell' for any slide that tilted over 60 deg or left the table, and
+    '<slide> face contact' for any slide a gripper held across its protected specimen faces."""
     t = _episode_time()
     if t is not None:
         if _EPISODE["t"] is not None and t < _EPISODE["t"]:
             new_episode()
         _EPISODE["t"] = t
+    poses = tcp_poses()
     for n in SLIDE_NAMES:
         if fell(objects[n]):
             _EPISODE["violations"].add(f"{n} fell")
+        if any(face_grip(objects[n], p, r) for p, r in poses):
+            _EPISODE["violations"].add(f"{n} face contact")
     return _EPISODE["violations"]
 
 
@@ -262,6 +310,7 @@ def counted_slides(objects) -> list[str]:
         if slots[n] is not None
         and counts[slots[n]] == 1
         and f"{n} fell" not in v
+        and f"{n} face contact" not in v
         and objects[n].resting()
         and released(objects[n], tcps)
     ]
