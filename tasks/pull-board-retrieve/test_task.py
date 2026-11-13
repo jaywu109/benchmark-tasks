@@ -263,7 +263,7 @@ def test_task_json_has_every_field_and_names_no_one():
         assert meta.get(key), key
     assert "media" not in meta
     assert meta["category"] in {"Impact on jobs", "Impact on AI timelines", "Safety and alignment",
-                                "Societal relevance", "Other"}
+                                "Societal relatability", "Other"}
     text = json.dumps(meta).lower() + (HERE / "README.md").read_text().lower() + TASK.docs.lower()
     for word in ("robocurve_sprint", "knowledge base", "kairos"):
         assert word not in text, word

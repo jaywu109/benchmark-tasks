@@ -8,8 +8,7 @@ The jar is beyond either arm's reach in any gripper orientation. The board's nea
 arms. Sliding the board toward the arms carries the jar with it, resting on the board.
 
 Run it:  inspect-robots run --embodiment yam_arena -E task=task.py -E object_jitter=0 \\
-           --instruction "The spice jar is out of reach on the board. Pull the board toward you to bring the
-           jar closer, then put the jar in the basket." --scorer task_score ...
+           --instruction "Put the spice jar in the basket." --scorer task_score ...
 """
 
 import numpy as np

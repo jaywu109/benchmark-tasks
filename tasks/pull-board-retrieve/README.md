@@ -18,7 +18,7 @@ On the VM with `yam-isaac-lab-arena` set up (its Quickstart), copy this folder t
 run with `-E object_jitter=0` (see Seeds).
 
 ```bash
-export INSTR="The spice jar is out of reach on the board. Pull the board toward you to bring the jar closer, then put the jar in the basket."
+export INSTR="Put the spice jar in the basket."
 ```
 
 Scripted demo (full score expected):
@@ -117,5 +117,6 @@ assets are used.
 Run on an RTX 5090 with `yam-isaac-lab-arena`, using the commands above (`object_jitter=0`):
 
 - Scripted demo (`demo()`): `task_score` 1.0, ended by success; 90 s wall clock including Isaac start-up.
-- Dream-1: `task_score` 0.0 after the full 2,400-step run limit; 231 s wall clock.
+- Dream-1: `task_score` 0.0 after the full 2,400-step run limit; 231 s wall clock. This run used an earlier, longer
+  wording of the instruction that also described pulling the board; the instruction now states only the goal.
 - Offline tests: 28 passed.
