@@ -10,6 +10,7 @@ slot nearer the arms, facing the arms. The slot is two low wooden strips, one in
 """
 
 import math
+import sys
 
 import numpy as np
 
@@ -180,10 +181,42 @@ def displayed(state) -> bool:
     )
 
 
+GRIPPER_CLEAR = 0.030  # the frame counts only when both TCPs are at least 3 cm from it (released)
+
+
+def tcp_points() -> list:
+    """World TCP positions of both arms this step, read from the embodiment up the call stack; [] offline."""
+    f = sys._getframe(1)
+    while f is not None:
+        s = f.f_locals.get("self")
+        if s is not None and hasattr(s, "_held") and getattr(s, "_base", None) is not None:
+            from yam_arena import ik, runtime, station
+
+            scene = s._base.scene
+            return [ik.tcp_pose(runtime.arm_q(scene[f"{a}_robot"]), station.BASES[a])[0] for a in ("left", "right")]
+        f = f.f_back
+    return []
+
+
+def box_distance(state, size, point) -> float:
+    """Distance (m) from ``point`` to the nearest point of a box of ``size`` at ``state``'s pose (0 inside it)."""
+    local = _rot(state).T @ (np.asarray(point, float) - np.asarray(state.pos, float))
+    half = np.asarray(size, float) / 2
+    return float(np.linalg.norm(local - np.clip(local, -half, half)))
+
+
+def released(state, tcps) -> bool:
+    """True when every TCP in ``tcps`` is at least GRIPPER_CLEAR from the nearest point of the frame."""
+    return all(box_distance(state, FRAME_SIZE, p) >= GRIPPER_CLEAR for p in tcps)
+
+
 def score(objects):
     """1.0 leaning on the ledge as displayed; 0.4 resting on the ledge any other way (upright, tipped forward
-    onto the lip, leaning more than 20 deg, lying flat, perched on the lip, not touching the wall); 0 otherwise."""
+    onto the lip, leaning more than 20 deg, lying flat, perched on the lip, not touching the wall); 0 otherwise.
+    Either way both grippers' TCPs must be at least 3 cm from the frame: a frame still held scores 0."""
     frame = objects["frame"]
+    if not released(frame, tcp_points()):
+        return 0.0
     if displayed(frame):
         return 1.0
     if on_ledge(frame):
@@ -192,8 +225,9 @@ def score(objects):
 
 
 def success(objects):
-    """The frame stands on the shelf leaning back against the wall, still."""
-    return displayed(objects["frame"])
+    """The frame stands on the shelf leaning back against the wall, still, with both grippers clear of it."""
+    frame = objects["frame"]
+    return displayed(frame) and released(frame, tcp_points())
 
 
 GOAL_OVERLAP = 0.005  # the demo sets the frame's bottom 5 mm onto the shelf

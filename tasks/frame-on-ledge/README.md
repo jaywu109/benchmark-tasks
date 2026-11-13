@@ -67,6 +67,10 @@ YAM_ARENA_DIR=/path/to/yam-isaac-lab-arena python -m pytest tasks/frame-on-ledge
 | Still at ledge level (lowest point 1.0-4.0 cm over the table, centre over the ledge) in any other pose: upright, tipped forward onto the lip, leaning over 20 deg, lying flat, perched on the lip, turned | 0.4 |
 | Left in the slot, on the table, fallen into the gap behind the shelf, over the lip onto the table, on top of the wall, off the end, held or moving | 0 |
 
+**Released, for any credit:** both grippers' tool centre points must be at least 3 cm from every point of the frame.
+A frame held in a qualifying pose scores 0, and the 1 s hold that ends the trial counts only once both grippers are
+clear, so the frame has to stand on its own. Checked every control step in `score()` and `success()`.
+
 `distance()` is the metres from the frame's centre to its centre in the demo's settled lean.
 
 ## How the release makes the frame lean (the derivation)
@@ -156,5 +160,7 @@ tape and a protractor. LIBERO's shelf tasks (`put ... on the cabinet shelf`) put
 Run on an RTX 5090 with `yam-isaac-lab-arena`, using the commands above (`object_jitter=0`):
 
 - Scripted demo (`demo()`): `task_score` 1.0, ended by success; 33 s wall clock including Isaac start-up.
+  In the demo the left arm opens, lifts 3 cm, backs 6 cm away from the wall and parks at (0.14, 0.44), more than 20 cm
+  from the frame; the right arm stays parked at (0.20, -0.30). The release check was added after this run.
 - Dream-1: `task_score` 0.0 after the full 1,200-step run limit; 118 s wall clock.
 - Offline tests: 21 passed.
