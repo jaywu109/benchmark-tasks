@@ -32,7 +32,7 @@ inspect-robots run --embodiment yam_arena --policy dream \
   --scorer task_score --max-steps 3600 --store-frames --log-dir ~/yam-eval/sizing-dream
 ```
 
-Scripted demo (41.2 s of motion including a 1.5 s final hold, 824 steps at 20 Hz; success ends it during the hold):
+Scripted demo (about 42.4 s of motion including a 1.5 s final hold, about 850 steps at 20 Hz; success ends it during the hold):
 
 ```bash
 inspect-robots run --embodiment yam_arena --policy yam_scripted \
@@ -76,8 +76,9 @@ overlaps; every fruit rests on the tray floor; every fruit fits the gripper with
 - **Board height:** 95 mm of clearance under the board, enough for one small fruit to land on top of another
   without the upper one jamming in the opening (2 x 44 mm + 7 mm).
 - **Demo:** the left arm takes each apricot from the tray and lets go of it with its bottom 10 mm above the
-  opening. The small ones drop through; each large one stays in the opening, and the right arm lifts it out
-  and sets it in the large-grade bin while the left arm waits beside the board.
+  opening. The small ones drop through; each large one stays in the opening. Both arms then stay clear of it
+  for at least 0.5 s while it sits there at rest (the size test), and the right arm lifts it out and sets it in
+  the large-grade bin while the left arm waits beside the board.
 
 ## Design choices
 
@@ -92,10 +93,20 @@ overlaps; every fruit rests on the tray floor; every fruit fits the gripper with
 - **A fixed board rather than a hand-held ring:** loose objects in the simulator must be single primitives,
   so a ring with a hole can only be built from fixed slabs.
 
+- **Size test before the large-grade bin:** a large apricot earns its +0.2 in the large-grade bin only once it
+  has been tested at the board: at some control step it sat in the opening (centre within 6 mm of the opening's
+  centre and within 6 mm of the height where a 56 mm fruit rests on the 50 mm opening), at rest, with both
+  grippers' TCPs at least 3 cm from its surface. This is latched for the episode. Without it, a robot could skip
+  the board and move the visibly larger fruit straight to the large-grade bin. A small apricot can only reach the
+  small-grade bin through the opening, so getting there is its test. In a real trial the same rule is read from
+  the video: the fruit is let go in the opening and stays seated there before it is moved to the large-grade bin.
+
 ## Verification
 
 Run on an RTX 5090 with `yam-isaac-lab-arena`, using the commands above (`object_jitter=0`):
 
 - Scripted demo (`demo()`): `task_score` 1.0, ended by success; 95 s wall clock including Isaac start-up.
+  The size-test rule and the demo's longer wait at the opening (each large fruit sits released for at least
+  0.5 s) were added after this run.
 - Dream-1: `task_score` 0.0 after the full 3,600-step run limit; 366 s wall clock.
 - Offline tests: 32 passed.

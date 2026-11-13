@@ -12,6 +12,7 @@ The tray, the bins and the board are fixed to the table; only the apricots move.
 """
 
 import math
+import sys
 
 import numpy as np
 
@@ -150,8 +151,81 @@ def _inside(pos, grade):
     return bool(np.all(pos >= lo) and np.all(pos <= hi))
 
 
+# -- the size test at the opening ---------------------------------------------------------------------------
+# A large apricot earns its large-grade credit only after it has been tested at the sizing board: released in the
+# opening and left sitting there, at rest, with both grippers clear of it. (A small apricot can only reach the
+# small-grade bin through the opening, so it is tested by getting there.) Latched per episode.
+SEAT_CENTRE_Z = BOARD_TOP + math.sqrt(R_LARGE**2 - (OPENING / 2) ** 2)  # a large fruit's centre sitting in the opening
+SEAT_TOL_XY = 0.006
+SEAT_TOL_Z = 0.006
+GRIPPER_CLEAR = 0.030  # both TCPs at least 3 cm from the fruit's surface
+_EPISODE: dict = {"t": None, "tested": set()}
+
+
+def new_episode():
+    _EPISODE["t"] = None
+    _EPISODE["tested"] = set()
+
+
+def _episode_time():
+    f = sys._getframe(1)
+    while f is not None:
+        s = f.f_locals.get("self")
+        if s is not None and hasattr(s, "_t") and hasattr(s, "_held"):
+            return float(s._t)
+        f = f.f_back
+    return None
+
+
+def tcp_points() -> list:
+    """World TCP positions of both arms this step, read from the embodiment up the call stack; [] offline."""
+    f = sys._getframe(1)
+    while f is not None:
+        s = f.f_locals.get("self")
+        if s is not None and hasattr(s, "_held") and getattr(s, "_base", None) is not None:
+            from yam_arena import ik, runtime, station
+
+            scene = s._base.scene
+            return [ik.tcp_pose(runtime.arm_q(scene[f"{a}_robot"]), station.BASES[a])[0] for a in ("left", "right")]
+        f = f.f_back
+    return []
+
+
+def seated_in_opening(state) -> bool:
+    """Sitting in the sizing board's opening (centre over it, at the height a large fruit rests there), at rest."""
+    p = np.asarray(state.pos, float)
+    return bool(
+        np.hypot(p[0] - SB_X, p[1] - SB_Y) <= SEAT_TOL_XY
+        and abs(p[2] - SEAT_CENTRE_Z) <= SEAT_TOL_Z
+        and state.resting()
+    )
+
+
+def released(state, radius, tcps) -> bool:
+    p = np.asarray(state.pos, float)
+    return all(float(np.linalg.norm(np.asarray(q, float) - p)) - radius >= GRIPPER_CLEAR for q in tcps)
+
+
+def tested(objects) -> set:
+    """Large apricots that have sat released in the opening, at rest, at some step this episode (latched)."""
+    t = _episode_time()
+    if t is not None:
+        if _EPISODE["t"] is not None and t < _EPISODE["t"]:
+            new_episode()
+        _EPISODE["t"] = t
+    tcps = tcp_points()
+    for name in FRUIT_NAMES:
+        if GRADE[name] == "large" and name not in _EPISODE["tested"]:
+            s = objects[name]
+            if seated_in_opening(s) and released(s, RADIUS[name], tcps):
+                _EPISODE["tested"].add(name)
+    return _EPISODE["tested"]
+
+
 def _tally(objects):
-    """(fruit resting in their correct bin, fruit in the wrong bin, fruit off the table)."""
+    """(fruit resting in their correct bin, fruit in the wrong bin, fruit off the table). A large apricot in the
+    large-grade bin counts as correct only once it has been tested at the opening."""
+    done = tested(objects)
     correct = wrong = dropped = 0
     for name in FRUIT_NAMES:
         s = objects[name]
@@ -159,7 +233,7 @@ def _tally(objects):
         if s.pos[2] < OFF_TABLE_Z:
             dropped += 1
         elif _inside(s.pos, grade):
-            correct += int(s.resting())
+            correct += int(s.resting() and (grade == "small" or name in done))
         elif _inside(s.pos, OTHER[grade]):
             wrong += 1
     return correct, wrong, dropped
@@ -202,7 +276,7 @@ RIGHT_PARK = (0.25, -0.20, RIGHT_Z)
 LB_SPOTS = [(LB_X - 0.035, LB_Y), (LB_X + 0.035, LB_Y)]  # where the right arm sets down the two large fruit
 LB_RELEASE_Z = LB_FLOOR_TOP + R_LARGE + 0.010 + GRIP_ABOVE_CENTRE
 LIFT_AFTER_DROP = 0.03  # left arm rises this far before sliding off, so the open pads do not drag a fruit out
-SETTLE_S = 1.0  # after a drop, before the right arm reaches for a fruit sitting in the opening
+SETTLE_S = 2.0  # after a drop, before the right arm reaches for a fruit sitting in the opening
 
 
 class _Track:
@@ -249,7 +323,7 @@ def demo():
         if GRADE[name] == "large":
             seat = (SB_X, SB_Y, SEAT_Z + GRIP_ABOVE_CENTRE)
             spot = next(spots)
-            right.wait_until(max(dropped_at + SETTLE_S, left.t), "wait for the left arm")
+            right.wait_until(max(dropped_at + SETTLE_S, left.t + 0.5), "wait: the fruit sits released in the opening")
             right.go(1.2, (SB_X, SB_Y, RIGHT_Z), FINGER_OPEN, f"over {name} in the opening")
             right.go(1.0, seat, label="descend")
             right.go(0.6, finger=FINGER_CLOSED, label="close")

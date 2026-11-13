@@ -30,6 +30,16 @@ SMALL = [n for n in M.FRUIT_NAMES if M.GRADE[n] == "small"]
 LARGE = [n for n in M.FRUIT_NAMES if M.GRADE[n] == "large"]
 
 
+@pytest.fixture(autouse=True)
+def _large_fruit_already_tested():
+    """Most checks below are about end states, so they start with both large apricots already tested at the
+    opening; the size-test checks clear this with M.new_episode()."""
+    M.new_episode()
+    M._EPISODE["tested"].update(LARGE)
+    yield
+    M.new_episode()
+
+
 def state(pos, r, vel=(0.0, 0.0, 0.0)):
     pos = np.asarray(pos, dtype=float)
     q = np.array([0.0, 0.0, 0.0, 1.0])
@@ -326,3 +336,50 @@ def test_the_grip_heights_keep_the_pad_tips_off_the_floor_and_the_board():
     for x, y in M.LB_SPOTS:  # open pads stay inside the large bin's walls
         assert abs(y - M.LB_Y) + PAD_OUTER < M.LB_IN / 2
         assert abs(x - M.LB_X) + M.R_LARGE < M.LB_IN / 2
+
+
+# -- 5. the size test at the opening ----------------------------------------------------------------------
+
+
+def seated(n):
+    return state((M.SB_X, M.SB_Y, M.SEAT_CENTRE_Z), M.RADIUS[n])
+
+
+def test_a_large_fruit_put_straight_in_the_large_bin_earns_nothing():
+    M.new_episode()
+    goal = goal_state()
+    assert TASK.score(goal) == pytest.approx(0.6) and not TASK.success(goal)
+
+
+def test_a_large_fruit_released_in_the_opening_then_binned_counts():
+    M.new_episode()
+    objects = start_state()
+    for n in LARGE:
+        objects[n] = seated(n)
+        TASK.success(objects)  # one control step with the fruit sitting released in the opening
+        objects[n] = start_state()[n]
+    goal = goal_state()
+    assert TASK.success(goal) and TASK.score(goal) == 1.0
+
+
+def test_a_large_fruit_held_in_the_opening_is_not_tested(monkeypatch):
+    M.new_episode()
+    n = LARGE[0]
+    objects = start_state()
+    objects[n] = seated(n)
+    monkeypatch.setattr(M, "tcp_points", lambda: [(M.SB_X, M.SB_Y, M.SEAT_CENTRE_Z + M.GRIP_ABOVE_CENTRE)])
+    TASK.success(objects)
+    assert n not in M._EPISODE["tested"]
+
+
+def test_a_large_fruit_still_moving_in_the_opening_is_not_tested():
+    M.new_episode()
+    n = LARGE[0]
+    objects = start_state()
+    objects[n] = state((M.SB_X, M.SB_Y, M.SEAT_CENTRE_Z), M.RADIUS[n], vel=(0.0, 0.0, -0.2))
+    TASK.success(objects)
+    assert n not in M._EPISODE["tested"]
+
+
+def test_the_seat_height_matches_the_demo():
+    assert M.SEAT_CENTRE_Z == pytest.approx(M.SEAT_Z)
