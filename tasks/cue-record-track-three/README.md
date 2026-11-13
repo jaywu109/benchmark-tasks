@@ -1,9 +1,9 @@
 # Cue a record at the start of its third track
 
-A radio board operator or DJ cues a record before it goes on air. With the platter stopped, they lift the tonearm by
-the small finger lift on its headshell, swing it over the record and lower the
-stylus by hand into the smooth gap before the wanted track, then let go, so that pressing start plays that track from
-its first note. The wanted track is found by counting the gaps from the edge. A stylus dropped onto the vinyl can
+Putting on a particular song from a vinyl record is a familiar everyday activity for anyone with a record player at home.
+With the platter stopped, you lift the tonearm by the small finger lift on its headshell, swing it over the record and lower the
+stylus by hand into the smooth gap before the song you want, then let go, so that pressing start plays that song from
+its first note. The wanted song is found by counting the gaps from the edge. A stylus dropped onto the vinyl can
 chip it, and one dragged across the grooves scratches the record. Here the LP's five tracks are of unequal length, and the arm lies in its rest clip.
 
 Instruction: *Cue the record at the start of track 3 and leave it ready to play.*
@@ -34,7 +34,7 @@ Positions in metres from the midpoint between the arm bases (x out, y left), hei
 - **Finger lift**: sticks out 22 mm from the right side of the headshell and rises as an aluminium fin
   12 x 5 x 30 mm.
 
-Sources: WRBB radio studio procedure "Playing vinyl" (techdocs.wrbbradio.org): "Only pick the headshell up with your
+Sources for the handling procedure: a college radio station's guide "Playing vinyl" (techdocs.wrbbradio.org): "Only pick the headshell up with your
 pointer finger under the small hook shaped arm"; "keep the first track off, but
 cued". KB Audio, "Can you skip tracks on a vinyl record?": the spaces between tracks show "as slightly wider gaps";
 "Count the number of gaps from the start of the record to figure out which track is which"; lower the arm gently and
