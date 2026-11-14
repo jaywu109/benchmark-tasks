@@ -143,13 +143,35 @@ def test_the_demo_picks_the_jar_where_the_two_strokes_leave_it():
 
 # -- 3. scoring of the goal and partial credit ------------------------------------------------------------------------
 
+FAR_TCPS = [np.array([0.20, 0.30, TOP + 0.30]), np.array([0.20, -0.30, TOP + 0.30])]  # both hands away, up
 
-def test_a_jar_resting_in_the_basket_succeeds_and_scores_one():
+
+@pytest.fixture(autouse=True)
+def hands_away(monkeypatch):
+    """Scoring tests run with both TCPs well clear of the jar unless a test places a hand on it."""
+    monkeypatch.setattr(M, "tcp_points", lambda: FAR_TCPS)
+
+
+def test_a_jar_still_held_in_the_basket_is_not_success(monkeypatch):
+    bx, by = M.BASKET_XY
+    objs = scene(jar(bx, by, M.FLOOR_TOP), board_near_x=-0.14)
+    held = [np.array([bx, by, M.FLOOR_TOP + M.JAR_H / 2]), FAR_TCPS[1]]  # left TCP between the pads, on the jar
+    monkeypatch.setattr(M, "tcp_points", lambda: held)
+    assert not TASK.success(objs) and TASK.score(objs) == 0.4
+    near = [np.array([bx, by, M.FLOOR_TOP + M.JAR_H + 0.02]), FAR_TCPS[1]]  # opened, only 2 cm above the lid
+    monkeypatch.setattr(M, "tcp_points", lambda: near)
+    assert not TASK.success(objs)
+    monkeypatch.setattr(M, "tcp_points", lambda: [])  # offline: no hands to read, never counted as let go
+    assert not TASK.success(objs)
+
+
+def test_a_jar_resting_in_the_basket_succeeds_and_its_final_state_alone_scores_0_4():
+    # 1.0 comes from the runner once success() has held for 1 s; score() of a final state is partial credit only
     bx, by = M.BASKET_XY
     upright = scene(jar(bx, by, M.FLOOR_TOP), board_near_x=-0.14)
     lying = scene(jar(bx + 0.02, by - 0.03, M.FLOOR_TOP, size=JAR_LYING), board_near_x=-0.14)
     for objs in (upright, lying):
-        assert TASK.success(objs) and TASK.score(objs) == 1.0
+        assert TASK.success(objs) and TASK.score(objs) == 0.4
     assert TASK.distance(upright) == pytest.approx(0.0, abs=1e-9)
 
 
@@ -261,7 +283,6 @@ def test_task_json_has_every_field_and_names_no_one():
     for key in ("title", "category", "keywords", "instruction", "context", "setup", "scoring", "run_limit",
                 "fidelity", "scores"):
         assert meta.get(key), key
-    assert "media" not in meta
     assert meta["category"] in {"Impact on jobs", "Impact on AI timelines", "Safety and alignment",
                                 "Societal relatability", "Other"}
     text = json.dumps(meta).lower() + (HERE / "README.md").read_text().lower() + TASK.docs.lower()

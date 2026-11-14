@@ -11,6 +11,8 @@ Run it:  inspect-robots run --embodiment yam_arena -E task=task.py -E object_jit
            --instruction "Put the spice jar in the basket." --scorer task_score ...
 """
 
+import sys
+
 import numpy as np
 
 from yam_arena.constants import FINGER_CLOSED, FINGER_OPEN
@@ -40,7 +42,7 @@ BOARD = Box(
 BOARD_TOP = TOP + BOARD_H  # once settled
 
 # -- the jar: a small glass spice jar, upright on the board's far end -------------------------------------------------
-JAR_R, JAR_H = 0.0225, 0.06  # squat (h/d 1.3): the first GPU round's 8 cm jar rocked on its rim while dragged
+JAR_R, JAR_H = 0.0225, 0.06  # squat (h/d 1.3): an 8 cm jar rocks on its rim while dragged
 JAR_X0 = 0.78
 JAR = Cylinder(
     "spice_jar",
@@ -79,6 +81,7 @@ REACH_X = 0.40  # "within reach": the jar's centre at most 0.40 m in front of th
 REACH_Y = 0.40  # ... and at most 0.40 m to either side of the midline (both arms reach straight down there)
 FALLEN_Z = TOP - 0.02  # the jar's bottom more than 2 cm below the table top: it has gone off the table
 FLOOR_SLACK = 0.01  # "in the basket": the jar's bottom within 1 cm of the basket floor
+GRIPPER_CLEAR = 0.03  # let go: both TCPs at least 3 cm from the jar's bounding box
 
 
 def _in_basket(jar) -> bool:
@@ -98,10 +101,32 @@ def _within_reach(jar) -> bool:
     return bool(jar.pos[0] <= REACH_X and abs(jar.pos[1]) <= REACH_Y)
 
 
+def tcp_points() -> list:
+    """World TCP positions of both arms this step, read from the embodiment up the call stack; [] offline."""
+    f = sys._getframe(1)
+    while f is not None:
+        s = f.f_locals.get("self")
+        if s is not None and hasattr(s, "_held") and getattr(s, "_base", None) is not None:
+            from yam_arena import ik, runtime, station
+
+            scene = s._base.scene
+            return [ik.tcp_pose(runtime.arm_q(scene[f"{a}_robot"]), station.BASES[a])[0] for a in ("left", "right")]
+        f = f.f_back
+    return []
+
+
+def _released(jar, tcps) -> bool:
+    """Both grippers have let go: each TCP at least GRIPPER_CLEAR from the jar. No TCPs to read: not released."""
+    return bool(tcps) and all(
+        np.linalg.norm(np.asarray(p, float) - np.clip(p, jar.low, jar.high)) >= GRIPPER_CLEAR for p in tcps
+    )
+
+
 def success(objects):
-    """The jar rests in the basket: centre over the inner 14 x 14 cm, bottom within 1 cm of the floor, still."""
+    """The jar rests in the basket: centre over the inner 14 x 14 cm, bottom within 1 cm of the floor, still,
+    and both grippers have let go of it."""
     jar = objects["spice_jar"]
-    return _in_basket(jar) and jar.resting()
+    return _in_basket(jar) and jar.resting() and _released(jar, tcp_points())
 
 
 def distance(objects):
@@ -111,13 +136,12 @@ def distance(objects):
 
 
 def score(objects):
-    """1.0: resting in the basket. 0.4: on the board or the table (or held above it) with its centre within
-    0.40 m in front of the arm bases and 0.40 m of the midline. 0: anywhere else, or off the table."""
+    """Final-state credit when the run ends without success (1.0 comes only from the runner's success ending, after
+    success() has held for 1 s): 0.4 on the board or the table (or held above it, the basket included) with its centre
+    within 0.40 m in front of the arm bases and 0.40 m of the midline. 0: anywhere else, or off the table."""
     jar = objects["spice_jar"]
     if _fallen(jar):
         return 0.0
-    if success(objects):
-        return 1.0
     return 0.4 if _within_reach(jar) else 0.0
 
 
@@ -129,7 +153,7 @@ PULL2_TO = 0.19  # re-grip at GRIP_X, second stroke 18 cm (jar -> 0.30 m)
 HOVER_Z = TOP + 0.10
 TRAVEL_Z = TOP + 0.13  # carrying height: the jar's bottom 10 cm above the table, 4 cm over the basket rim
 # planned JAR_X0 - (GRIP_X - PULL1_TO) - (GRIP_X - PULL2_TO) = 0.30; in sim the board trails the hand ~5 mm per stroke,
-# so the jar ends at x 0.309-0.312 (measured 2026-11-02)
+# so the jar ends at x 0.309-0.312
 JAR_END_X = 0.31
 JAR_GRIP_Z = BOARD_TOP + JAR_H / 2  # the jar's centre once settled on the board
 PLACE_Z = FLOOR_TOP + 0.008 + JAR_H / 2  # set down 8 mm above the basket floor, fingers inside the walls
