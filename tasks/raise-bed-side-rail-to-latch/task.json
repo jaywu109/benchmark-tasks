@@ -1,0 +1,20 @@
+{
+  "title": "Raise a bed's half side rail to its top position until its latch catches",
+  "category": "Impact on jobs",
+  "keywords": [
+    "nursing assistant",
+    "bed side rail",
+    "ramped spring latch",
+    "care bed safety",
+    "hinged rail"
+  ],
+  "instruction": "Put the bed's side rail up.",
+  "context": "Nursing assistants (O*NET 31-1131.00, about 1.4 million US workers) and home health and personal care aides (about 4 million; BLS OEWS, May 2024) raise a care bed's side rails after bedside care and before leaving a resident whose care plan calls for them. IEC 60601-2-52 sets a 220 mm minimum rail height above the uncompressed mattress, and hospital bed manuals instruct staff to swing the rail upward to full height until the spring latch clicks into its catch so the rail cannot drop when let go.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. A fixed mattress block (50 x 90 x 18 cm) sits with its near edge at x 44.0 cm, centred at y 0.0 cm, and carries a fixed steel latch keeper bracket at y +25.5 cm (x 41.9 to 49.4 cm, 2.4 cm wide) with a 20 deg entry ramp leading to a vertical locking lip at x 45.1 cm and a catch pocket behind it. In front of the mattress, a 3.0 kg steel half side rail (60 cm long along y, 30 cm tall above its hinge, 2.5 cm thick) is hinged along y at x 42.0 cm, 11.0 cm above the table, with a 3.0 cm diameter round top tube, a bottom bar, and three vertical posts. The rail starts lowered at 100.0 deg toward -x, resting on its lower stop on a free gravity hinge. At the +y end of the rail rides an 80 g spring-loaded ramped latch assembly (vertical 15 mm slide with an 80 N/m upward preload spring): a front red paddle (2.6 x 1.5 x 8.0 cm at y +28.5 cm) connected to a rear catch arm and 24 deg bevelled tooth at y +25.5 cm. As the rail swings up over its last 8 deg to 0 deg, the keeper ramp depresses the latch tooth downward against its spring until the tooth clears the lip at x 45.1 cm and snaps upward into the catch pocket, holding the rail upright by contact alone.",
+  "scoring": "Checked every control step; the trial ends with score 1.0 once success() has held for 1.0 s (20 steps at 20 Hz), otherwise partial credit is 0.0. Latched fault (latches score 0.0 for the whole trial): rail_dropped if the rail top tube ever rises more than 5.0 cm above its 100.0 deg lower stop and then falls back within 5.0 mm of the lower stop. End state (success()): rail top tube within 5.0 mm of its 0.0 deg upright top position and rail angle moved <= 0.5 deg over the last 1.0 s (20 steps); latch caught in the keeper pocket (downward depression <= 3.0 mm and tooth locking corner past x 45.05 cm); both gripper TCPs at least 4.0 cm from every rail and latch collider; and no latched fault.",
+  "run_limit": "360 steps (18 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Depress the latch to clear the keeper lip and lower the rail back to its 100.0 deg lower stop; latched faults and angle history clear at reset.",
+  "fidelity": "The top bar is a 12-gon of rotated boxes approximating a 30 mm round tube; the rail hinge is a free revolute joint with a 6 mm -x center-of-mass offset so an unlatched rail falls back to its 100 deg stop; the latch is a compound rigid body on a vertical prismatic joint with a preloaded upward spring that snaps behind the keeper lip by contact alone (no runtime joint switching). The mattress is a fixed rigid block; the 3.0 kg rail and 80 g latch masses are approximate.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-C7YFZH"
+}
