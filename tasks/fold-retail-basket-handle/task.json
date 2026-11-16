@@ -1,0 +1,20 @@
+{
+  "title": "Fold a retail hand basket's bow handle down flat",
+  "category": "Societal relatability",
+  "keywords": [
+    "shopping basket",
+    "retail",
+    "folding handle",
+    "hinge",
+    "storage"
+  ],
+  "instruction": "Fold the shopping basket's handle flat for storage.",
+  "context": "Almost everyone has carried a plastic hand basket round a supermarket or shop, and shop staff gather empty ones and nest them for storage; the maker's catalogue notes that the single-handle basket's \"ergonomic handle folds down\". The hands' part is not a picture decision: a stiff 80 g bow stands upright on a hinge and must be pushed off its raised stop so that it folds a quarter turn onto its folded stop, while the basket, only 620 g and resting on the table by friction alone, must neither slide off nor tip, and both hands must end clear of the bow. The goal is stated without the method.",
+  "setup": "Two YAM arms with parallel grippers, bases 61 cm apart at the near edge of a table. Positions in cm from the midpoint between the arm bases: x straight out, y to the left, z up from the table top. One empty Intech EK-4330-EG polypropylene retail hand basket (22 L, single handle) stands upright on the table, centred at (28, 0): body 43 cm long (left-right) by 30 cm deep by 22.5 cm tall at the rim, tapering to 33 x 20.5 cm at the base, walls and floor 5 mm, blue, 620 g in all (540 g body, 80 g handle). Its single bow handle is a polypropylene bar frame: a 39 cm wide, 2 cm square top bar on two 2 cm square legs 12 cm long, 20.5 cm either side of centre, hinged about a horizontal axis along the basket's long side at its far wall (x 42, 23.5 cm above the table, 1 cm above the rim). It starts upright, resting on a raised stop 5 degrees past vertical, its top bar 35.5 cm above the table (13 cm over the rim); it folds down 95 degrees to a horizontal stop, pointing away from the arms. Both grippers start clear of the basket.",
+  "scoring": "Measured with a protractor or side video for the handle, a level or side photo for the basket, and video or a ruler for the hands. 0 if, at any time in the trial, the basket leaves the table (including lifted more than 2 cm off it), tips more than 30 degrees, or the handle detaches (standing it back up does not undo this). Otherwise 1.0 if the handle has turned within 5 degrees of its folded stop and stays still (within 0.5 degrees) for 1 second with both grippers released and at least 3 cm from the bow, and the basket resting on the table (base within 3 mm of the table top, not moving, no gripper within 3 cm of it) for that same second; the full score held for 1 second ends the trial. Otherwise 0.5 if the handle has turned at least 60 degrees from its raised start at some point and the basket is upright (tilt at most 30 degrees) and on the table. Otherwise 0. The score is read at the end of the run.",
+  "run_limit": "260 steps (13 seconds at 20 Hz)",
+  "reset_notes": "No consumable items. Raise the attached handle to its upright stop and put the empty basket upright at the marked starting position.",
+  "fidelity": "Body matches the published 430x300x225 mm rim, 330x205 mm base and 620 g total; the hollow shell is five convex 5 mm pieces. The bow's 20 mm section, 120 mm height, pivot position, 80 g mass and the 0.4 friction are estimates. A free hinge with low pivot friction (0.015 N m) and hard stops stands in for the real hinge detent: the raised stop is 5 deg past vertical so the bow stands unaided; the folded stop is horizontal.",
+  "scores": "Dream-1 run: 0.0 (step limit 260); demo: 1.0",
+  "media": "M-C9T29A"
+}
