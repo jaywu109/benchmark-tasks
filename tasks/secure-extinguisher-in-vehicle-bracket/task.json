@@ -1,0 +1,22 @@
+{
+  "title": "Flip a vehicle fire extinguisher bracket's latch lever down to lock the strap around the extinguisher",
+  "category": "Safety and alignment",
+  "keywords": [
+    "fire extinguisher",
+    "vehicle bracket",
+    "quick-release strap",
+    "over-centre latch",
+    "lever",
+    "safety equipment",
+    "bus driver"
+  ],
+  "instruction": "Secure the fire extinguisher in its vehicle bracket.",
+  "context": "Among the duties O*NET lists for school bus drivers (53-3051.00) is checking vehicle safety equipment; with transit and intercity bus drivers (53-3052.00) they number 562,170 in the May 2025 BLS OEWS. Rusoh's installation sheet for its PN 81-674 vehicle bracket says to connect the latch loop to the latch hook and flip the latch lever down, which locks the quick-release strap around the extinguisher's discharge head. Here the loop is already on the hook. The lever has to be driven through the strap's over-centre point onto its stop without unhooking the loop, unseating the 3.2 kg extinguisher or shifting the bracket, and it must stay locked on its own after the hands let go. The 2.5 lb extinguisher is the one this bracket is made for, not a school-bus-rated 5 lb unit.",
+  "setup": "Two YAM arms with parallel grippers at a table. Positions are metres from the midpoint between the arm bases, x straight out, y to the left, z up from the table top. A 430 x 210 x 18 mm wood mounting plate with four screw heads lies centred at (0.245, -0.304), its long side along y; it stands in for the sturdy mounting surface the installation sheet calls for. On it, a Rusoh PN 81-674 2.5 lb vehicle bracket (black steel, 0.34 kg, 146 x 277 mm footprint) is installed horizontally with its latch facing up: floor, end tab, cradle cheeks, the strap's fixed half and a 6 mm round hook peg at (0.297, -0.205, 0.137). A red Rusoh Eliminator 2.5 lb ABC extinguisher (175 x 410 x 167 mm, 3.155 kg) lies nested in the cradle along y, bottom rim against the end tab at y = -0.433, discharge head toward +y. The black steel strap band runs over the neck at y = -0.180. Its free end carries a yellow 70 mm latch lever hinged at (0.289, -0.180, 0.128), raised 100 degrees to its open stop; the lever's steel wire loop (10 x 14 mm hole) already hangs on the hook peg.",
+  "scoring": "0 if the lever is not raised 90 to 105 degrees at the first measured step. A fault at any time latches 0 for the whole trial: the loop's hole more than 12 mm off the hook peg (10 mm along it); the extinguisher moving more than 15 mm sideways, lifting more than 8 mm, sinking more than 4 mm or tilting more than 5 degrees; the bracket moving more than 10 mm or tilting more than 5 degrees; strap end, lever or loop pulled more than 10 mm off their joints. 0.5 once the lever has been lowered through 45 degrees of its 100 degree arc (to 55 degrees or less) with no fault. 1.0 when the lever is within 10 degrees of its closed stop (past the over-centre point at 32 degrees), both gripper centre points are at least 30 mm clear of the lever and the extinguisher, and this has held for 1 s with the lever's angle varying less than 0.5 degrees over that second and the extinguisher still (under 1 cm/s and 0.5 rad/s). Full score held for 1 s ends the trial; otherwise the end score is used.",
+  "run_limit": "500 steps (25 seconds at 20 Hz)",
+  "reset_notes": "Nothing is consumed. Raise the latch lever to its open stop with the loop left on the hook, and leave the extinguisher nested against the end tab.",
+  "fidelity": "Extinguisher (175 x 410 x 167 mm, 3.155 kg) and bracket (146 x 277 mm, 0.34 kg, built 121 mm high vs 127 published) match published sizes; the extinguisher's centre of mass is an estimate. The strap is a rigid band whose stretch is one 600 N/m spring: catch at 32 deg, about 3 N to pass. Lever (70 mm), wire loop (10 x 14 mm hole), 6 mm peg and catch geometry are nominal, not measured. No release button. Clearance reads gripper centre points only; a parked arm may overhang the extinguisher.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-APN4K4"
+}
