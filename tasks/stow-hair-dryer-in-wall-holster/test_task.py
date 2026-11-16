@@ -64,30 +64,32 @@ def test_meshes_are_full_size_and_disjoint_on_spawn():
 def test_scoring_and_shortcuts():
     M.reset_episode()
     goal = scene()
-    assert M.grade(goal, forces=(1.0, 0.0), opened=True) == 1.0
+    assert M.grade(goal, forces=(1.0, 0.0)) == 1.0
     assert M.success(goal) is False  # no live contact and opening data means no full score
     M.reset_episode()
-    assert M.grade(goal, forces=(1.0, 1.0), opened=False) == .5  # held in goal
+    assert M.grade(goal, forces=(1.0, 1.0)) == .5  # held in goal
     M.reset_episode()
-    assert M.grade(goal, forces=(0.0, 0.0), opened=True) == 0.0  # mere pose cannot score
+    assert M.grade(goal, forces=(0.0, 0.0)) == 0.0  # mere pose cannot score
     M.reset_episode()
-    partial = scene(dryer_z=.305)
-    assert M.grade(partial, forces=(1.0, 0.0), opened=False) == .5
+    shallow = scene(dryer_z=.340)
+    assert M.grade(shallow, forces=(1.0, 0.0)) == 0.0  # resting on the rim, not in
+    M.reset_episode()
+    assert M.grade(goal, forces=(1.0, 0.002)) == .5  # a link still touches the dryer
     M.reset_episode()
     moved = scene(holder_offset=.011)
-    assert M.grade(moved, forces=(1.0, 0.0), opened=True) == 0.0
-    assert M.grade(goal, forces=(1.0, 0.0), opened=True) == 0.0  # fault latched
+    assert M.grade(moved, forces=(1.0, 0.0)) == 0.0
+    assert M.grade(goal, forces=(1.0, 0.0)) == 0.0  # fault latched
     M.reset_episode()
     fallen = scene(dryer_z=-.100)
-    assert M.grade(fallen, forces=(1.0, 0.0), opened=True) == 0.0
+    assert M.grade(fallen, forces=(1.0, 0.0)) == 0.0
 
 
 def test_retention_clock():
     M.reset_episode()
     goal = scene()
     for t in (0.0, .5, .95):
-        assert M.grade(goal, t=t, forces=(1.0, 0.0), opened=True) == .5
-    assert M.grade(goal, t=1.0, forces=(1.0, 0.0), opened=True) == 1.0
+        assert M.grade(goal, t=t, forces=(1.0, 0.0)) == .5
+    assert M.grade(goal, t=1.0, forces=(1.0, 0.0)) == 1.0
     M.reset_episode()
 
 

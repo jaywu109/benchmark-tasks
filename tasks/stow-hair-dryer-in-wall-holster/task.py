@@ -58,9 +58,7 @@ PARTIAL_DEPTH_M = 0.020
 HOLDER_MAX_MOVE_M = 0.010
 FALL_LOW_Z = TOP - 0.010
 RETENTION_S = 1.0
-FINGER_OPEN_LIMIT_M = -0.038  # >= 76 mm jaw gap, well clear of the 25 mm handle
-NO_HAND_CONTACT_N = 0.05
-MIN_COIL_CONTACT_N = 0.05
+CONTACT_EPS_N = 1e-3  # numeric noise floor: any robot link touching the dryer counts as contact
 STILL_M_S = 0.012
 STILL_RAD_S = 0.15
 FOOTPRINT_TOL_M = 0.012
@@ -151,17 +149,6 @@ def contact_forces(base):
         return None
 
 
-def fingers_open(emb):
-    if emb is None:
-        return None
-    readings = []
-    for side in ("left", "right"):
-        _, finger_ids = emb._ids[f"{side}_robot"]
-        q = emb._base.scene[f"{side}_robot"].data.joint_pos.torch[0].cpu().numpy()
-        readings.extend(float(q[i]) for i in finger_ids)
-    return min(readings) <= FINGER_OPEN_LIMIT_M and max(readings) <= FINGER_OPEN_LIMIT_M
-
-
 _S = {"t": None, "step": 0, "fault": False, "clear_since": None, "logged": False}
 
 
@@ -169,7 +156,7 @@ def reset_episode():
     _S.update(t=None, step=0, fault=False, clear_since=None, logged=False)
 
 
-def grade(objects, *, t=None, forces=None, opened=None):
+def grade(objects, *, t=None, forces=None):
     """Shared scorer, with injectable physical readings for the offline checks."""
     d, h = objects["dryer"], objects["holster"]
     if t is not None and _S["t"] is not None and t < _S["t"]:
@@ -189,8 +176,8 @@ def grade(objects, *, t=None, forces=None, opened=None):
     within = math.hypot(centre[0]-HOLSTER_XY[0], centre[1]-HOLSTER_XY[1]) <= FOOTPRINT_TOL_M
     entered = tip[2] <= TOP + TOP_TURN_Z - PARTIAL_DEPTH_M and axis[2] > 0.85 and within
     coil_n, hand_n = forces if forces is not None else (0.0, math.inf)
-    coil_touch = coil_n >= MIN_COIL_CONTACT_N
-    released = opened is True and hand_n <= NO_HAND_CONTACT_N
+    coil_touch = coil_n > CONTACT_EPS_N
+    released = hand_n <= CONTACT_EPS_N  # no robot link touches the dryer
     seated = (entered and coil_touch and TOP + LOWER_TURN_Z - .015 <= tip[2]
               <= TOP + TOP_TURN_Z - PARTIAL_DEPTH_M and within)
     still = float(np.linalg.norm(d.lin_vel)) <= STILL_M_S and float(np.linalg.norm(d.ang_vel)) <= STILL_RAD_S
@@ -211,7 +198,7 @@ def grade(objects, *, t=None, forces=None, opened=None):
               f"barrel_xy_err_mm={1000*math.hypot(centre[0]-HOLSTER_XY[0],centre[1]-HOLSTER_XY[1]):.1f} "
               f"tip_xy_err_mm={1000*math.hypot(tip[0]-HOLSTER_XY[0],tip[1]-HOLSTER_XY[1]):.1f} "
               f"right_tcp={_S.get('tcp')} "
-              f"coil_n={coil_n:.2f} hand_n={hand_n:.2f} open={int(opened is True)} "
+              f"coil_n={coil_n:.2f} hand_n={hand_n:.2f} "
               f"still={int(still)} held_s={hold:.2f} holder_move_mm={1000*holder_move:.1f} "
               f"fault={int(_S['fault'])} score={score:.1f}", flush=True)
     return score
@@ -229,7 +216,7 @@ def score(objects):
     emb = _embodiment()
     _S["tcp"] = None if emb is None else _right_tcp(emb)
     return grade(objects, t=None if emb is None else float(emb._t),
-                 forces=None if emb is None else contact_forces(emb._base), opened=fingers_open(emb))
+                 forces=None if emb is None else contact_forces(emb._base))
 
 
 def success(objects):

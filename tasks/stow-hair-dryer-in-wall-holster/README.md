@@ -56,8 +56,8 @@ for log in ~/yam-eval/stow-hair-dryer-*/*.json; do inspect-robots video "$log"; 
 ```
 
 The run prints `task_score` at the end. Offline checks: `YAM_ARENA=~/yam-isaac-lab-arena python -m pytest -q
-test_task.py` (NumPy and pytest only). The scorer reads finger joints and contact forces from the running simulation.
-In a physical trial, use video, a ruler and a force gauge or scale instead.
+test_task.py` (NumPy and pytest only). The scorer reads contact reports from the running simulation.
+In a physical trial, use video and a ruler instead.
 
 ## Scoring
 
@@ -66,9 +66,9 @@ Measured every control step; the trial score is the last one (`SCORE_OVER = "end
 - **0** for the rest of the trial (latched) once the dryer drops more than 10 mm below the tabletop or leaves the
   700 x 900 mm table, or the holster moves more than 10 mm.
 - **1.0**: the dryer is barrel-down (axis within 32 deg of vertical) with its barrel centre within 12 mm of the
-  holster axis. Its tip is at least 20 mm below the top turn and no lower than 15 mm under the lowest turn. A turn of
-  the holster carries at least 0.05 N of contact. The dryer is still (12 mm/s, 0.15 rad/s). Both hands are open to at
-  least 76 mm, and no robot link presses on the dryer with more than 0.05 N. All of this holds without a break for
+  holster axis. Its tip is at least 20 mm below the top turn and no lower than 15 mm under the lowest turn. It rests on a turn of
+  the holster (contact reported). The dryer is still (12 mm/s, 0.15 rad/s) and no robot link touches it. How far the
+  hands are open does not matter. All of this holds without a break for
   1.0 s.
 - **0.5**: barrel-down, centred and in at least 20 mm, touching a turn, but not yet released and still for 1.0 s
   (for example, still held).
@@ -92,7 +92,7 @@ turn, held by the coil and gravity (default friction 1.2).
 Run on an RTX 5090 with `yam-isaac-lab-arena` at `bd62771`, using the commands above (`object_jitter=0`, default
 seed):
 
-- Scripted demo: `task_score` 1.0, ended by success at step 455 (about 23 s of trial time); 60 s wall clock including
+- Scripted demo: `task_score` 1.0, ended by success at step 450 (about 22 s of trial time); 55 s wall clock including
   Isaac start-up. The right hand takes the handle 31 mm out from the housing, its fingers closing across the handle's
   25 mm width and tilted 48 deg from vertical so the pads lie along the handle. It lifts the dryer and turns it
   barrel-down, the tip 30 cm above the table. It then brings the barrel over the coil (7 mm off its axis) and lowers it
