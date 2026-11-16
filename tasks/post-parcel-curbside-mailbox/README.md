@@ -1,4 +1,4 @@
-# Leave a parcel in a curbside mailbox: raise the carrier flag the instruction never names and lift the hanging door shut from below
+# Leave a parcel in a curbside mailbox: raise the carrier flag the instruction never names, lift the hanging door shut
 
 The mailbox's front door hangs 82 deg open below the mouth. The hand has to lift it from below, up its hinge arc
 against its own weight, and press it the last few degrees past a roller catch that only takes it within 4 deg of
