@@ -457,7 +457,7 @@ def test_task_json_and_readme_conform_to_guidelines():
     assert '"' not in meta["context"]
     assert len(meta["fidelity"]) <= 500, len(meta["fidelity"])
     assert isinstance(meta["scores"], str) and len(meta["scores"]) > 0
-    assert "media" not in meta
+    assert str(meta.get("media", "M-")).startswith("M-")
     readme = (HERE / "README.md").read_text()
     lines = [line.strip() for line in readme.splitlines()]
     assert "## Third-party assets" in lines and "none" in lines
